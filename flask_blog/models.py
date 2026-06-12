@@ -20,6 +20,6 @@ class User(db.Model, UserMixin):
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable = False)
-    dateposted = db.Column(db.DateTime, nullable = False, default = datetime.now(timezone.utc))
+    dateposted = db.Column(db.DateTime, nullable = False, default=lambda: datetime.now(timezone.utc))
     content = db.Column(db.Text, nullable = False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable = False)
