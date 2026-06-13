@@ -1,7 +1,7 @@
 {% extends "layouts.html" %}
 {% block content %}
-    <h1>Home Page</h1>
-    <h2><p>Welcome to my Flask app.</p></h2>
+    <h1>All Posts by {{ user.username }}</h1>
+    <h2>Total : {{ posts.total }}</h2>
     {% for post in posts.items %}
         <article class="media content-section">
             <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}">
@@ -19,16 +19,16 @@
         {% for page_num in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=1) %}
             {% if page_num %}
                 {% if page_num == posts.page %}
-                    <a class="btn btn-info mb-4 mr-1 ml-1" href="{{ url_for('home', page=page_num) }}">{{ page_num }}</a>
+                <a class="btn btn-info mb-4 mr-1 ml-1" href="{{ url_for('user_posts', username=user.username, page=page_num) }}">{{ page_num }}</a>
                 {% else %}
                     {% if page_num == posts.pages %}
-                        <a class="btn btn-outline-info mb-4 mr-1 ml-1" href="{{ url_for('home', page=page_num) }}">->></a>
+                        <a class="btn btn-outline-info mb-4 mr-1 ml-1" href="{{ url_for('user_posts', username=user.username, page=page_num) }}">->></a>
                     {% elif page_num == 1 %}
-                        <a class="btn btn-outline-info mb-4 mr-1 ml-1" href="{{ url_for('home', page=page_num) }}"><<-</a>
+                        <a class="btn btn-outline-info mb-4 mr-1 ml-1" href="{{ url_for('user_posts', username=user.username, page=page_num) }}"><<-</a>
                     {% elif page_num > posts.page %}
-                        <a class="btn btn-outline-info mb-4 mr-1 ml-1" href="{{ url_for('home', page=page_num) }}">-></a>
+                        <a class="btn btn-outline-info mb-4 mr-1 ml-1" href="{{ url_for('user_posts', username=user.username, page=page_num) }}">-></a>
                     {% else %}
-                        <a class="btn btn-outline-info mb-4 mr-1 ml-1" href="{{ url_for('home', page=page_num) }}"><-</a>
+                        <a class="btn btn-outline-info mb-4 mr-1 ml-1" href="{{ url_for('user_posts', username=user.username, page=page_num) }}"><-</a>
                     {% endif %}
                 {% endif %}
             {% else %}
