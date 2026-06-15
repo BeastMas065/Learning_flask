@@ -61,9 +61,24 @@ class UpdateForm(FlaskForm):
         if current_user.email != email.data:
             name = User.query.filter_by(email=email.data).first()
             if name:
-                raise ValidationError("User with wamail already exists, try loggin in")
+                raise ValidationError("User with Email already exists, try loggin in")
             
 class PostForm(FlaskForm):
     title = StringField('Title', validators = [DataRequired()])
     content = TextAreaField("Content", validators=[DataRequired()])
     submit = SubmitField("Upload Post")
+
+
+class RequestResetForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    submit = SubmitField("Request Password Reset")
+    
+    def validate_email(self, email):
+        user = User.query.filter_by(email = email.data).first()
+        if not user:
+            raise ValidationError("User with this email does not exist, Create account")
+
+class ResetPasswordForm(FlaskForm):
+    password = StringField('New Password', validators=[DataRequired()])
+    confirm_password = StringField('Confirm Password', validators=[DataRequired()]) 
+    submit = SubmitField('Reset')
