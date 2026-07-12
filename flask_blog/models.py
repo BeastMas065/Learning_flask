@@ -27,7 +27,7 @@ class User(db.Model, UserMixin):
             user_id = data['user_id']
         except:
             return None
-        return User.query.get(id = user_id)      
+        return User.query.get(user_id)      
 
     def __repr__(self):
         return f'user("{self.username}")'

@@ -45,10 +45,12 @@ def register():
         return redirect(url_for('home'))
     form = RegistrationForm()
     if form.validate_on_submit():
+        hashed_password = bcrypt.generate_password_hash(form.password.data).decode("utf-8") 
         if form.picture.data:
             picture_file = save_picture(form.picture.data)
-        hashed_password = bcrypt.generate_password_hash(form.password.data).decode("utf-8")
-        user = User(username=form.username.data, email = form.email.data, password = hashed_password, image_file = picture_file)
+            user = User(username=form.username.data, email = form.email.data, password = hashed_password, image_file = picture_file)     
+        else:
+            user = User(username=form.username.data, email = form.email.data, password = hashed_password)    
         db.session.add(user)
         db.session.commit()
         flash("Acoount Created!!, You can now log in", 'success')
@@ -123,7 +125,7 @@ def post_update(post_id):
     if post.author != current_user:
         abort(403)
     if form.validate_on_submit():
-        post.title = form.title.data
+        post.title = form.title.datas
         post.content = form.content.data
         db.session.commit()
         flash("Post Updated Successfully", "success")
@@ -158,6 +160,7 @@ def send_email(user):
     msg.body = f'''To reset your password click here:
 {url_for('reset_password', token=token, _external=True)}
 If you didnt request this please ignore and your account is safe'''
+    mail.send(msg)
 
 
 @app.route('/requestreset', methods=['GET', 'POST'])
@@ -176,7 +179,7 @@ def reset_password(token):
     user = User.verify_token(token=token)
     if not user:
         flash('Token is invalid or expired', 'danger')
-        redirect(url_for('request_mail'))
+        return redirect(url_for('request_mail'))
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode("utf-8")
         user.password = hashed_password
