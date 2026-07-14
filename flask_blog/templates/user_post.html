@@ -1,7 +1,19 @@
 {% extends "layouts.html" %}
 {% block content %}
-    <h1>All Posts by {{ user.username }}</h1>
-    <h2>Total : {{ posts.total }}</h2>
+<div class="content-section">
+    <div class="media">
+            <img class="rounded-circle account-img" src="{{ url_for('static', filename='profile_pics/' + user.image_file) }}">
+            <div class="media-body">
+                <h2 class="account-heading">{{ user.username }}</h2>
+                <p class="text-secondary">{{ user.email }}</p>
+            </div>
+            {% if current_user == user %}
+                <div>
+                    <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('users.account') }}">Edit Account Details</a>
+                </div>
+                {% endif %}
+        </div>
+    <h3>Total Posts : {{ posts.total }}</h3>
     {% for post in posts.items %}
         <article class="media content-section">
             <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}">
@@ -35,4 +47,5 @@
             {% endif %}
         {% endfor %}
     </div>
+</div>
 {% endblock content %}

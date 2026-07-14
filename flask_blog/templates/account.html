@@ -50,6 +50,10 @@
                             {% endfor %}
                         {% endif %}
                 </div>
+                <div class="form-check">
+                    {{ form.default(class="form-check-input") }}
+                    {{ form.default.label(class="form-control-label") }}
+                </div>
                 <div class="form-group">
                     {{ form.submit(class="btn btn-outline-info") }}
                 </div>
